@@ -28,7 +28,20 @@ app.get("/api/get-cookie", (req, res) => {
   if (cookieValue) {
     res.json({ cookie: cookieValue });
   } else {
-    res.status(404).json({ message: "Cookie non trovato!" });
+    res.status(403).json({ message: "Cookie non trovato!" });
+  }
+});
+
+app.get("/api/delete-cookie", (req, res) => {
+  if (req.cookies.myCookie) {
+    res.clearCookie("myCookie",{
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+    });
+    res.json({message: "cookie cleared"});
+  } else {
+      res.status(403).json({ message: "Cookie non presente, non puoi eseguire richieste!" });
   }
 });
 
